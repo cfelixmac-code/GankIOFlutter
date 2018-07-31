@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gankio/display/fuli.dart';
 import 'package:gankio/display/ganhuo.dart';
+import 'package:gankio/display/search.dart';
 import 'package:gankio/display/today.dart';
 import 'package:gankio/display/xiandu.dart';
 
@@ -42,9 +43,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(widget.title),
+        title: Row(
+          children: <Widget>[
+            Expanded(
+              child: new Text(widget.title),
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              tooltip: 'Search',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
+              },
+            )
+          ],
+        ),
+//        title: new Text(widget.title),
       ),
       body: new PageView(
+        onPageChanged: (int position) {
+          _updatePageIndex(position);
+        },
         children: <Widget>[
           new TodayPage(),
           new GanhuoPage(),

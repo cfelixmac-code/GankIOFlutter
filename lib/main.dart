@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:gankio/display/fuli.dart';
+import 'package:gankio/display/ganhuo.dart';
+import 'package:gankio/display/today.dart';
+import 'package:gankio/display/xiandu.dart';
 
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Gank IO Flutter',
       theme: new ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new HomePage(title: 'Gank IO'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _HomePageState createState() => new _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    setState(() {});
+class _HomePageState extends State<HomePage> {
+  int _pageIndex = 0;
+  var _pageController = PageController(keepPage: true);
+
+  void _updatePageIndex(int index) {
+    setState(() {
+      this._pageIndex = index;
+    });
   }
 
   @override
@@ -36,25 +44,29 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
       ),
-      body: ListView.builder(
-        padding: new EdgeInsets.all(8.0),
-        itemExtent: 40.0,
-        itemBuilder: (BuildContext context, int index) {
-          return new Text('entry $index');
-        },
+      body: new PageView(
+        children: <Widget>[
+          new TodayPage(),
+          new GanhuoPage(),
+          new XianduPage(),
+          new FuliPage(),
+        ],
+        controller: _pageController,
       ),
-      bottomNavigationBar: new BottomNavigationBar(items: [
-        new BottomNavigationBarItem(
-            icon: Icon(Icons.home), title: Text("GanHuo")),
-        new BottomNavigationBarItem(
-            icon: Icon(Icons.search), title: Text("XianDu")),
-        new BottomNavigationBarItem(
-            icon: Icon(Icons.menu), title: Text("FuLi")),
-      ]),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
+      bottomNavigationBar: new BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: [
+          new BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Today")),
+          new BottomNavigationBarItem(icon: Icon(Icons.history), title: Text("History")),
+          new BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("XianDu")),
+          new BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), title: Text("FuLi")),
+        ],
+        currentIndex: _pageIndex,
+        onTap: (int pos) {
+          _pageController.animateToPage(pos, duration: new Duration(milliseconds: 400), curve: Curves.easeInOut);
+          _updatePageIndex(pos);
+          print("position : $pos");
+        },
       ),
     );
   }

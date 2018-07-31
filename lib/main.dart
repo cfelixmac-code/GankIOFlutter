@@ -56,10 +56,10 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: new BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: [
-          new BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Today")),
-          new BottomNavigationBarItem(icon: Icon(Icons.history), title: Text("History")),
-          new BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("XianDu")),
-          new BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), title: Text("FuLi")),
+          new BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("今日")),
+          new BottomNavigationBarItem(icon: Icon(Icons.history), title: Text("历史")),
+          new BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("闲读")),
+          new BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), title: Text("福利")),
         ],
         currentIndex: _pageIndex,
         onTap: (int pos) {

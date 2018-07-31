@@ -10,6 +10,8 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   http: ^0.11.3+16
+  html: ^0.13.3
+  flutter_webview_plugin: ^0.1.6
 
 dev_dependencies:
   flutter_test:

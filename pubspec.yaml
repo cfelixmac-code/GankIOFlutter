@@ -13,6 +13,7 @@ dependencies:
   html: ^0.13.3
   flutter_webview_plugin: ^0.1.6
   event_bus: ^1.0.1
+  fluttertoast: ^2.0.7
 
 dev_dependencies:
   flutter_test:

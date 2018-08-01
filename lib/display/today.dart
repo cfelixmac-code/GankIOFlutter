@@ -30,8 +30,7 @@ class _TodayPageState extends State<TodayPage> {
           width: MediaQuery.of(context).size.width * 0.15,
           height: MediaQuery.of(context).size.width * 0.15,
           child: Center(
-            child:
-                CircularProgressIndicator(), // By default, show a loading spinner
+            child: CircularProgressIndicator(), // By default, show a loading spinner
           ),
         );
       },
@@ -71,61 +70,54 @@ Widget _generateContent(Article article, BuildContext context) {
   if (appArticles != null && appArticles.length != 0) {
     items.add(_generateSectionTitle('App'));
     items.add(_generateHorizontalLine());
-    for (var sector in appArticles)
-      _generateArticleDesc(items, sector, context);
+    for (var sector in appArticles) _generateArticleDesc(items, sector, context);
   }
   // =================> Android Content
   var androidArticles = article.result['Android'];
   if (androidArticles != null && androidArticles.length != 0) {
     items.add(_generateSectionTitle('Android'));
     items.add(_generateHorizontalLine());
-    for (var sector in androidArticles)
-      _generateArticleDesc(items, sector, context);
+    for (var sector in androidArticles) _generateArticleDesc(items, sector, context);
   }
   // =================> iOS Content
   var iOSArticles = article.result['iOS'];
   if (iOSArticles != null && iOSArticles.length != 0) {
     items.add(_generateSectionTitle('iOS'));
     items.add(_generateHorizontalLine());
-    for (var sector in iOSArticles)
-      _generateArticleDesc(items, sector, context);
+    for (var sector in iOSArticles) _generateArticleDesc(items, sector, context);
   }
   // =================> QianDuan Content
   var frontArticles = article.result['前端'];
   if (frontArticles != null && frontArticles.length != 0) {
     items.add(_generateSectionTitle('前端'));
     items.add(_generateHorizontalLine());
-    for (var sector in frontArticles)
-      _generateArticleDesc(items, sector, context);
+    for (var sector in frontArticles) _generateArticleDesc(items, sector, context);
   }
   // =================> TuoZhan Content
   var extendArticles = article.result['拓展资源'];
   if (extendArticles != null && extendArticles.length != 0) {
     items.add(_generateSectionTitle('拓展资源'));
     items.add(_generateHorizontalLine());
-    for (var sector in extendArticles)
-      _generateArticleDesc(items, sector, context);
+    for (var sector in extendArticles) _generateArticleDesc(items, sector, context);
   }
   // =================> XiuXi Content
   var relaxArticles = article.result['休息视频'];
   if (relaxArticles != null && relaxArticles.length != 0) {
     items.add(_generateSectionTitle('休息视频'));
     items.add(_generateHorizontalLine());
-    for (var sector in relaxArticles)
-      _generateArticleDesc(items, sector, context);
+    for (var sector in relaxArticles) _generateArticleDesc(items, sector, context);
   }
   // ==============> FuLi Image
   items.add(_generateSectionTitle('福利'));
   items.add(_generateHorizontalLine());
   String fuLiUrl =
-      (article.result['福利'] != null && article.result['福利'].length > 0)
-          ? article.result['福利'][0].url
-          : null;
+      (article.result['福利'] != null && article.result['福利'].length > 0) ? article.result['福利'][0].url : null;
   if (fuLiUrl != null) {
     Image image = new Image.network(article.result['福利'][0].url);
     Completer<ui.Image> completer = new Completer<ui.Image>();
-    image.image.resolve(new ImageConfiguration()).addListener(
-        (ImageInfo info, bool _) => completer.complete(info.image));
+    image.image
+        .resolve(new ImageConfiguration())
+        .addListener((ImageInfo info, bool _) => completer.complete(info.image));
     items.add(new FutureBuilder<ui.Image>(
       future: completer.future,
       builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
@@ -134,8 +126,7 @@ Widget _generateContent(Article article, BuildContext context) {
           return new Container(
             margin: EdgeInsets.only(top: 3.0, bottom: 10.0),
             width: imageWidthDefine,
-            height:
-                imageWidthDefine / snapshot.data.width * snapshot.data.height,
+            height: imageWidthDefine / snapshot.data.width * snapshot.data.height,
             child: image,
           );
         } else {
@@ -174,14 +165,12 @@ Widget _generateSectionTitle(String text) {
     margin: EdgeInsets.only(top: 8.0),
     child: Text(
       text,
-      style: TextStyle(
-          fontSize: 18.5, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+      style: TextStyle(fontSize: 18.5, fontWeight: FontWeight.bold, color: Colors.blueGrey),
     ),
   );
 }
 
-_generateArticleDesc(
-    List<Widget> items, ArticleSector sector, BuildContext context) {
+_generateArticleDesc(List<Widget> items, ArticleSector sector, BuildContext context) {
   items.add(new GestureDetector(
       onTap: () {
         Navigator.push(
@@ -194,22 +183,15 @@ _generateArticleDesc(
       },
       child: new Container(
         margin: EdgeInsets.only(top: 3.0, bottom: 3.0),
-        padding:
-            EdgeInsets.only(left: 10.0, right: 2.0, top: 12.0, bottom: 12.0),
+        padding: EdgeInsets.only(left: 10.0, right: 2.0, top: 12.0, bottom: 12.0),
         color: Colors.black12,
         child: new RichText(
-            text: new TextSpan(
-                style: new TextStyle(fontSize: 13.0),
-                children: <TextSpan>[
-              new TextSpan(
-                  text: sector.desc, style: new TextStyle(color: Colors.black)),
-              new TextSpan(
-                  text: "\nby ${sector.who}",
-                  style: new TextStyle(
-                      color: Colors.grey,
-                      fontSize: 10.0,
-                      fontStyle: FontStyle.italic))
-            ])),
+            text: new TextSpan(style: new TextStyle(fontSize: 13.0), children: <TextSpan>[
+          new TextSpan(text: sector.desc, style: new TextStyle(color: Colors.black)),
+          new TextSpan(
+              text: "\nby ${sector.who}",
+              style: new TextStyle(color: Colors.grey, fontSize: 10.0, fontStyle: FontStyle.italic))
+        ])),
       )));
 }
 

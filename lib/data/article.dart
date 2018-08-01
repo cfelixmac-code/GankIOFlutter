@@ -55,7 +55,7 @@ class ArticleSector {
     return new ArticleSector(
       createdAt: raw['createdAt'],
       desc: raw['desc'],
-      images: raw.containsKey('images') ? new List<String>.from(raw['images']) : null,
+      images: (raw.containsKey('images') && raw['images'] != null) ? new List<String>.from(raw['images']) : null,
       publishedAt: raw['publishedAt'],
       url: raw['url'],
       who: raw['who'],

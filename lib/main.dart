@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     try {
+      // ignore: deprecated_member_use
       MaterialPageRoute.debugEnableFadingRoutes = true;
     } catch (e) {
       // nothing..

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:gankio/data/article.dart';
@@ -79,8 +78,8 @@ Widget _generateContent(Article article, BuildContext context) {
   // =================> Android Content
   var androidArticles = article.result['Android'];
   if (androidArticles != null && androidArticles.length != 0) {
-    items.add(_buildArticlesBlock(
-        title: 'Android', icon: 'images/android_icon.png', articles: androidArticles, context: context));
+    items
+        .add(_buildArticlesBlock(title: 'Android', icon: 'images/android_icon.png', articles: androidArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // =================> iOS Content
@@ -92,58 +91,61 @@ Widget _generateContent(Article article, BuildContext context) {
   // =================> QianDuan Content
   var frontArticles = article.result['前端'];
   if (frontArticles != null && frontArticles.length != 0) {
-    items.add(
-        _buildArticlesBlock(title: '前端', icon: 'images/front_icon.png', articles: frontArticles, context: context));
+    items.add(_buildArticlesBlock(title: '前端', icon: 'images/front_icon.png', articles: frontArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // =================> TuoZhan Content
   var extendArticles = article.result['拓展资源'];
   if (extendArticles != null && extendArticles.length != 0) {
-    items.add(
-        _buildArticlesBlock(title: '拓展资源', icon: 'images/extend_icon.png', articles: extendArticles, context: context));
+    items.add(_buildArticlesBlock(title: '拓展资源', icon: 'images/extend_icon.png', articles: extendArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // =================> XiuXi Content
   var relaxArticles = article.result['休息视频'];
   if (relaxArticles != null && relaxArticles.length != 0) {
-    items.add(
-        _buildArticlesBlock(title: '休息视频', icon: 'images/relax_icon.png', articles: relaxArticles, context: context));
+    items.add(_buildArticlesBlock(title: '休息视频', icon: 'images/relax_icon.png', articles: relaxArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // ==============> FuLi Image
-  items.add(_generateSectionTitle('福利'));
-  items.add(_generateHorizontalLine());
-  String fuLiUrl =
-      (article.result['福利'] != null && article.result['福利'].length > 0) ? article.result['福利'][0].url : null;
+  String fuLiUrl = (article.result['福利'] != null && article.result['福利'].length > 0) ? article.result['福利'][0].url : null;
   if (fuLiUrl != null) {
-    Image image = new Image.network(article.result['福利'][0].url);
-    Completer<ui.Image> completer = new Completer<ui.Image>();
-    image.image
-        .resolve(new ImageConfiguration())
-        .addListener((ImageInfo info, bool _) => completer.complete(info.image));
-    items.add(new FutureBuilder<ui.Image>(
-      future: completer.future,
-      builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
-        if (snapshot.hasData) {
-          double imageWidthDefine = MediaQuery.of(context).size.width * 0.5;
-          return new Container(
-            margin: EdgeInsets.only(top: 3.0, bottom: 10.0),
-            width: imageWidthDefine,
-            height: imageWidthDefine / snapshot.data.width * snapshot.data.height,
-            child: image,
-          );
-        } else {
-          return new Text('Loading...');
-        }
-      },
-    ));
-  } else {
-    items.add(new Container(
-      margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
-      child: Text(
-        '今天没有福利~QAQ~',
-        style: TextStyle(fontSize: 15.0),
+    items.add(new Card(
+      child: Container(
+        height: 42.0,
+        child: GestureDetector(
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return ProfitImageDialog(fuLiUrl);
+                });
+          },
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Center(
+                            child: Text(
+                              '~今日妹子~',
+                              maxLines: 1,
+                              style: TextStyle(fontSize: 12.0, color: Colors.black38, letterSpacing: 3.0),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+            ],
+          ),
+        ),
       ),
+    ));
+    items.add(Container(
+      height: 12.0,
     ));
   }
 
@@ -171,7 +173,13 @@ Widget _generateTitle(String text) {
 
 Widget _buildArticlesBlock({String title, String icon, List<ArticleSector> articles, BuildContext context}) {
   var articleItems = List<Widget>();
+  articleItems.add(Container(
+    height: 3.0,
+  ));
   articleItems.add(_buildArticlesBlockTitle(title: title, icon: icon));
+  articleItems.add(Container(
+    height: 5.0,
+  ));
   for (var sector in articles) {
     articleItems.add(_buildArticleItem(sector, context));
   }
@@ -208,7 +216,7 @@ Widget _buildArticlesBlock({String title, String icon, List<ArticleSector> artic
           Expanded(
             child: Container(
               color: Colors.white,
-              padding: EdgeInsets.only(top: 10.0, left: 10.0),
+              padding: EdgeInsets.only(top: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: articleItems,
@@ -225,85 +233,72 @@ Widget _buildArticlesBlockTitle({String title, String icon}) {
   return Row(
     children: <Widget>[
       Container(
+        margin: EdgeInsets.only(left: 6.0),
         padding: EdgeInsets.all(0.0),
-        width: 22.0,
-        height: 22.0,
+        width: 24.0,
+        height: 24.0,
         child: Image.asset(icon),
       ),
       Text(
         '  $title',
-        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500, color: const Color(0xFF515151)),
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600, color: const Color(0xFF515151)),
       ),
     ],
   );
 }
 
 Widget _buildArticleItem(ArticleSector article, BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return TodayDetailDialog(article);
-          });
-    },
-    child: Container(
-      padding: EdgeInsets.only(left: 8.0, top: 10.0, right: 3.0, bottom: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Center(
-            child: Container(
-              margin: EdgeInsets.only(top: 3.5, right: 6.0),
-              child: Image.asset('images/doc_icon.png'),
-              width: 15.0,
-              height: 15.0,
+  return Material(
+    child: InkWell(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return TodayDetailDialog(article);
+            });
+      },
+      child: Container(
+        padding: EdgeInsets.only(left: 18.0, top: 10.0, right: 3.0, bottom: 10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 3.5, right: 6.0),
+                child: Image.asset('images/doc_icon.png'),
+                width: 15.0,
+                height: 15.0,
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                    margin: EdgeInsets.only(right: 5.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.only(right: 5.0),
+                      child: Text(
+                        '${article.desc.trim()}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 13.0, color: Color(0xFF555555)),
+                      )),
+                  Container(
                     child: Text(
-                      '${article.desc.trim()}',
+                      '${article.who} 发布于 ${article.publishedAt.substring(0, 10)}',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 13.0, color: Color(0xFF555555)),
-                    )),
-                Container(
-                  child: Text(
-                    '${article.who} 发布于 ${article.publishedAt.substring(0, 10)}',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 9.0, color: Colors.black45),
+                      textAlign: TextAlign.right,
+                      style: TextStyle(fontSize: 9.0, color: Colors.black45),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
-  );
-}
-
-Widget _generateSectionTitle(String text) {
-  return new Container(
-    margin: EdgeInsets.only(top: 8.0),
-    child: Text(
-      text,
-      style: TextStyle(fontSize: 18.5, fontWeight: FontWeight.bold, color: Colors.blueGrey),
-    ),
-  );
-}
-
-Widget _generateHorizontalLine() {
-  return new Container(
-    height: 1.0,
-    color: Colors.blueGrey,
+    color: Colors.transparent,
   );
 }
 
@@ -324,3 +319,38 @@ Future<dom.Document> _fetchHtml() async {
     throw Exception('Failed to HomeHtml');
   }
 }
+
+//  /////////// IMAGE REQUEST NOTE ///////////////////
+//
+//  items.add(_generateSectionTitle('福利'));
+//  items.add(_generateHorizontalLine());
+//  String fuLiUrl = (article.result['福利'] != null && article.result['福利'].length > 0) ? article.result['福利'][0].url : null;
+//  if (fuLiUrl != null) {
+//    Image image = new Image.network(article.result['福利'][0].url);
+//    Completer<ui.Image> completer = new Completer<ui.Image>();
+//    image.image.resolve(new ImageConfiguration()).addListener((ImageInfo info, bool _) => completer.complete(info.image));
+//    items.add(new FutureBuilder<ui.Image>(
+//      future: completer.future,
+//      builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
+//        if (snapshot.hasData) {
+//          double imageWidthDefine = MediaQuery.of(context).size.width * 0.5;
+//          return new Container(
+//            margin: EdgeInsets.only(top: 3.0, bottom: 10.0),
+//            width: imageWidthDefine,
+//            height: imageWidthDefine / snapshot.data.width * snapshot.data.height,
+//            child: image,
+//          );
+//        } else {
+//          return new Text('Loading...');
+//        }
+//      },
+//    ));
+//  } else {
+//    items.add(new Container(
+//      margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
+//      child: Text(
+//        '今天没有福利~QAQ~',
+//        style: TextStyle(fontSize: 15.0),
+//      ),
+//    ));
+//  }

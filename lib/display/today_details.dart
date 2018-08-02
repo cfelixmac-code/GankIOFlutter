@@ -147,3 +147,49 @@ class _TodayDetailDialogState extends State<TodayDetailDialog> {
     );
   }
 }
+
+class ProfitImageDialog extends StatelessWidget {
+  ProfitImageDialog(this.url);
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      contentPadding: EdgeInsets.only(top: 15.0),
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width,
+              child: Image.network(url),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context, true);
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 12.0),
+                height: 42.0,
+                color: Color(0xfff0ac73),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          '关闭',
+                          style: TextStyle(color: Colors.white, fontSize: 13.0, letterSpacing: 5.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+}

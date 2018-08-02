@@ -1,7 +1,7 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:gankio/data/search_result.dart';
-import 'package:gankio/display/webview.dart';
+import 'package:gankio/display/web_view.dart';
 import 'package:http/http.dart' as http;
 
 var _bus = EventBus();

@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:gankio/data/article.dart';
 import 'package:gankio/display/today_details.dart';
-import 'package:gankio/display/webview.dart';
+import 'package:gankio/display/web_view.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gankio/data/article.dart';
-import 'package:gankio/display/webview.dart';
+import 'package:gankio/display/image_view.dart';
+import 'package:gankio/display/web_view.dart';
 import 'package:gankio/main.dart';
 
 class TodayDetailDialog extends StatefulWidget {
@@ -38,7 +39,12 @@ class _TodayDetailDialogState extends State<TodayDetailDialog> {
                   ),
                 ),
                 Center(
-                  child: Image.network(imgUrl),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, GankNavigator(builder: (context) => ImageViewPage(imgUrl)));
+                    },
+                    child: Image.network(imgUrl),
+                  ),
                 ),
               ],
             ),

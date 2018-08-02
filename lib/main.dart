@@ -62,7 +62,6 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-//        title: new Text(widget.title),
       ),
       body: new PageView(
         onPageChanged: (int position) {

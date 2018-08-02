@@ -30,8 +30,13 @@ flutter:
   uses-material-design: true
 
   assets:
+  - images/doc_icon.png
   - images/android_icon.png
-  - images/article_icon.png
+  - images/app_icon.png
+  - images/extend_icon.png
+  - images/front_icon.png
+  - images/ios_icon.png
+  - images/relax_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

@@ -41,6 +41,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    try {
+      MaterialPageRoute.debugEnableFadingRoutes = true;
+    } catch (e) {
+      // nothing..
+    }
     return new Scaffold(
       appBar: new AppBar(
         title: Row(
@@ -52,8 +57,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.search),
               tooltip: 'Search',
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SearchPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
               },
             )
           ],
@@ -75,24 +79,30 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: new BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: [
-          new BottomNavigationBarItem(
-              icon: Icon(Icons.home), title: Text("今日")),
-          new BottomNavigationBarItem(
-              icon: Icon(Icons.history), title: Text("历史")),
-          new BottomNavigationBarItem(
-              icon: Icon(Icons.book), title: Text("闲读")),
-          new BottomNavigationBarItem(
-              icon: Icon(Icons.card_giftcard), title: Text("福利")),
+          new BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("今日")),
+          new BottomNavigationBarItem(icon: Icon(Icons.history), title: Text("历史")),
+          new BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("闲读")),
+          new BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), title: Text("福利")),
         ],
         currentIndex: _pageIndex,
         onTap: (int pos) {
-          _pageController.animateToPage(pos,
-              duration: new Duration(milliseconds: 400),
-              curve: Curves.easeInOut);
+          _pageController.animateToPage(pos, duration: new Duration(milliseconds: 400), curve: Curves.easeInOut);
           _updatePageIndex(pos);
           print("position : $pos");
         },
       ),
+    );
+  }
+}
+
+class GankNavigator extends MaterialPageRoute {
+  GankNavigator({@required WidgetBuilder builder}) : super(builder: builder);
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+    return new FadeTransition(
+      opacity: animation,
+      child: builder(context),
     );
   }
 }

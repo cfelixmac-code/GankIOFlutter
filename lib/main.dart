@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
           new BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("今日")),
           new BottomNavigationBarItem(icon: Icon(Icons.history), title: Text("历史")),
           new BottomNavigationBarItem(icon: Icon(Icons.book), title: Text("闲读")),
-          new BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), title: Text("福利")),
+          new BottomNavigationBarItem(icon: Icon(Icons.settings), title: Text("设置")),
         ],
         currentIndex: _pageIndex,
         onTap: (int pos) {

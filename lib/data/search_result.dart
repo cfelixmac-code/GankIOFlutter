@@ -18,10 +18,10 @@ class SearchResult {
 }
 
 class SearchResultItem {
-  SearchResultItem({this.desc, this.ganhuo_id, this.publishedAt, this.type, this.url, this.who});
+  SearchResultItem({this.desc, this.id, this.publishedAt, this.type, this.url, this.who});
 
   String desc;
-  String ganhuo_id;
+  String id;
   String publishedAt;
   String type;
   String url;
@@ -31,7 +31,7 @@ class SearchResultItem {
     Map<String, dynamic> rawItem = raw;
     return SearchResultItem(
         desc: rawItem['desc'],
-        ganhuo_id: rawItem['ganhuo_id'],
+        id: rawItem['ganhuo_id'],
         publishedAt: rawItem['publishedAt'],
         type: rawItem['type'],
         url: rawItem['url'],

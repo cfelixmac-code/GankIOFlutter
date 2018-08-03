@@ -1,0 +1,81 @@
+Flutter crash report; please file at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter build apk
+
+## exception
+
+FormatException: FormatException: Bad UTF-8 encoding 0xc3 (at offset 172)
+
+```
+#0      _Utf8Decoder.convert (dart:convert/utf.dart:490)
+#1      _Utf8ConversionSink.addSlice (dart:convert/string_conversion.dart:345)
+#2      _Utf8ConversionSink.add (dart:convert/string_conversion.dart:341)
+#3      _ConverterStreamEventSink.add (dart:convert/chunked_conversion.dart:86)
+#4      _SinkTransformerStreamSubscription._handleData (dart:async/stream_transformers.dart:120)
+#5      _rootRunUnary (dart:async/zone.dart:1134)
+#6      _CustomZone.runUnary (dart:async/zone.dart:1031)
+#7      _CustomZone.runUnaryGuarded (dart:async/zone.dart:933)
+#8      _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:330)
+#9      _BufferingStreamSubscription._add (dart:async/stream_impl.dart:257)
+#10     _StreamController&&_SyncStreamControllerDispatch._sendData (dart:async/stream_controller.dart:763)
+#11     _StreamController._add (dart:async/stream_controller.dart:639)
+#12     _StreamController.add (dart:async/stream_controller.dart:585)
+#13     _Socket._onData (dart:io-patch/socket_patch.dart:1672)
+#14     _rootRunUnary (dart:async/zone.dart:1138)
+#15     _CustomZone.runUnary (dart:async/zone.dart:1031)
+#16     _CustomZone.runUnaryGuarded (dart:async/zone.dart:933)
+#17     _BufferingStreamSubscription._sendData (dart:async/stream_impl.dart:330)
+#18     _BufferingStreamSubscription._add (dart:async/stream_impl.dart:257)
+#19     _StreamController&&_SyncStreamControllerDispatch._sendData (dart:async/stream_controller.dart:763)
+#20     _StreamController._add (dart:async/stream_controller.dart:639)
+#21     _StreamController.add (dart:async/stream_controller.dart:585)
+#22     new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:1245)
+#23     _NativeSocket.issueReadEvent.issue (dart:io-patch/socket_patch.dart:797)
+#24     _microtaskLoop (dart:async/schedule_microtask.dart:41)
+#25     _startMicrotaskLoop (dart:async/schedule_microtask.dart:50)
+#26     _runPendingImmediateCallback (dart:isolate-patch/dart:isolate/isolate_patch.dart:113)
+#27     _RawReceivePortImpl._handleMessage (dart:isolate-patch/dart:isolate/isolate_patch.dart:166)
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel beta, v0.5.1, on Microsoft Windows [Version 10.0.17134.191], locale zh-CN)
+    • Flutter version 0.5.1 at C:\Users\hzwangyufei\App\flutter
+    • Framework revision c7ea3ca377 (9 weeks ago), 2018-05-29 21:07:33 +0200
+    • Engine revision 1ed25ca7b7
+    • Dart version 2.0.0-dev.58.0.flutter-f981f09760
+
+[✓] Android toolchain - develop for Android devices (Android SDK 27.0.3)
+    • Android SDK at C:\Users\hzwangyufei\AppData\Local\Android\Sdk\platform-tools
+    • Android NDK location not configured (optional; useful for native profiling support)
+    • Platform android-27, build-tools 27.0.3
+    • ANDROID_HOME = C:\Users\hzwangyufei\AppData\Local\Android\Sdk\platform-tools
+    • Java binary at: C:\Users\hzwangyufei\TOOLS\android-studio-beta\jre\bin\java
+    • Java version OpenJDK Runtime Environment (build 1.8.0_152-release-1136-b04)
+    • All Android licenses accepted.
+
+[✓] Android Studio (version 3.1)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin version 26.0.1
+    • Dart plugin version 173.4700
+    • Java version OpenJDK Runtime Environment (build 1.8.0_152-release-1024-b02)
+
+[✓] Android Studio (version 3.2)
+    • Android Studio at C:\Users\hzwangyufei\TOOLS\android-studio-beta
+    ✗ Flutter plugin not installed; this adds Flutter specific functionality.
+    ✗ Dart plugin not installed; this adds Dart specific functionality.
+    • Java version OpenJDK Runtime Environment (build 1.8.0_152-release-1136-b04)
+
+[!] VS Code, 64-bit edition (version 1.25.1)
+    • VS Code at C:\Program Files\Microsoft VS Code
+    • Flutter extension not installed; install from
+      https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter
+
+[✓] Connected devices (1 available)
+    • Nexus 6P • ENU7N15B09001681 • android-arm64 • Android 8.1.0 (API 27)
+
+! Doctor found issues in 1 category.
+```

@@ -4,8 +4,8 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 class WebViewer extends StatelessWidget {
   WebViewer({this.url, this.title = "Gank IO"});
 
-  String url;
-  String title;
+  final String url;
+  final String title;
 
   @override
   Widget build(BuildContext context) {

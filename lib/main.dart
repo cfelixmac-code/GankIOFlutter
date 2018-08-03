@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gankio/display/fuli.dart';
-import 'package:gankio/display/ganhuo.dart';
+import 'package:gankio/display/history.dart';
 import 'package:gankio/display/search.dart';
 import 'package:gankio/display/today.dart';
 import 'package:gankio/display/xiandu.dart';
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         },
         children: <Widget>[
           new TodayPage(),
-          new GanhuoPage(),
+          new HistoryPage(),
           new XianduPage(),
           new FuliPage(),
         ],

@@ -78,8 +78,8 @@ Widget _generateContent(Article article, BuildContext context) {
   // =================> Android Content
   var androidArticles = article.result['Android'];
   if (androidArticles != null && androidArticles.length != 0) {
-    items
-        .add(_buildArticlesBlock(title: 'Android', icon: 'images/android_icon.png', articles: androidArticles, context: context));
+    items.add(_buildArticlesBlock(
+        title: 'Android', icon: 'images/android_icon.png', articles: androidArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // =================> iOS Content
@@ -91,23 +91,27 @@ Widget _generateContent(Article article, BuildContext context) {
   // =================> QianDuan Content
   var frontArticles = article.result['前端'];
   if (frontArticles != null && frontArticles.length != 0) {
-    items.add(_buildArticlesBlock(title: '前端', icon: 'images/front_icon.png', articles: frontArticles, context: context));
+    items.add(
+        _buildArticlesBlock(title: '前端', icon: 'images/front_icon.png', articles: frontArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // =================> TuoZhan Content
   var extendArticles = article.result['拓展资源'];
   if (extendArticles != null && extendArticles.length != 0) {
-    items.add(_buildArticlesBlock(title: '拓展资源', icon: 'images/extend_icon.png', articles: extendArticles, context: context));
+    items.add(
+        _buildArticlesBlock(title: '拓展资源', icon: 'images/extend_icon.png', articles: extendArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // =================> XiuXi Content
   var relaxArticles = article.result['休息视频'];
   if (relaxArticles != null && relaxArticles.length != 0) {
-    items.add(_buildArticlesBlock(title: '休息视频', icon: 'images/relax_icon.png', articles: relaxArticles, context: context));
+    items.add(
+        _buildArticlesBlock(title: '休息视频', icon: 'images/relax_icon.png', articles: relaxArticles, context: context));
     items.add(_buildSectionSpace());
   }
   // ==============> FuLi Image
-  String fuLiUrl = (article.result['福利'] != null && article.result['福利'].length > 0) ? article.result['福利'][0].url : null;
+  String fuLiUrl =
+      (article.result['福利'] != null && article.result['福利'].length > 0) ? article.result['福利'][0].url : null;
   if (fuLiUrl != null) {
     items.add(new Card(
       child: Container(
@@ -130,7 +134,7 @@ Widget _generateContent(Article article, BuildContext context) {
                         Expanded(
                           child: Center(
                             child: Text(
-                              '~今日妹子~',
+                              '~TODAY妹子~',
                               maxLines: 1,
                               style: TextStyle(fontSize: 12.0, color: Colors.black38, letterSpacing: 3.0),
                             ),

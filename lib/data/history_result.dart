@@ -20,9 +20,11 @@ class HistoryResult {
 }
 
 class HistoryResultItem {
-  HistoryResultItem({this.id, this.sections});
+  HistoryResultItem({this.id, this.sections, this.publishedAt, this.title});
 
   String id;
+  String publishedAt;
+  String title;
 
   List<HistoryArticleSection> sections;
 
@@ -72,7 +74,7 @@ class HistoryResultItem {
         }
       } catch (e) {}
     }
-    return HistoryResultItem(id: id, sections: resolvedSections);
+    return HistoryResultItem(id: id, sections: resolvedSections, publishedAt: raw['publishedAt'], title: raw['title']);
   }
 }
 

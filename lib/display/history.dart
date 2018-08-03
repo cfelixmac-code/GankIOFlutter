@@ -93,8 +93,8 @@ class HistoryListItem extends StatelessWidget {
     for (HistoryArticleSection section in item.sections) {
       if (section.articles != null) {
         for (HistoryArticle article in section.articles) {
-          content += article.title;
-          content += ' | ';
+          content += article.title.substring(0, article.title.lastIndexOf('(')).trim();
+          content += '  ';
         }
       }
     }

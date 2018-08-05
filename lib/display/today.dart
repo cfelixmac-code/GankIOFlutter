@@ -109,7 +109,7 @@ Widget _generateContent(Article article, BuildContext context) {
         _buildArticlesBlock(title: '休息视频', icon: 'images/relax_icon.png', articles: relaxArticles, context: context));
     items.add(_buildSectionSpace());
   }
-  // ==============> FuLi Image
+  // ==============> Girl Image
   String fuLiUrl =
       (article.result['福利'] != null && article.result['福利'].length > 0) ? article.result['福利'][0].url : null;
   if (fuLiUrl != null) {

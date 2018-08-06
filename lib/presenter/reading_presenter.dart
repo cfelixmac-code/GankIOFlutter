@@ -1,9 +1,10 @@
+import 'package:gankio/data/reading_data.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ReadingCategoryView {
-  fetchCategoryReceived();
+  fetchCategoryReceived(ReadingCategoryResult result);
 
-  fetchSitesReceived();
+  fetchSitesReceived(ReadingSiteResult result);
 }
 
 class ReadingCategoryPresenter {
@@ -14,7 +15,7 @@ class ReadingCategoryPresenter {
   fetchCategory() async {
     final response = await http.get("https://gank.io/api/xiandu/categories");
     if (response.statusCode == 200) {
-      _view.fetchCategoryReceived();
+      _view.fetchCategoryReceived(ReadingCategoryResult.fromJson(response.body));
     } else {
       throw Exception('fetchCategory-Error ${response.statusCode}');
     }
@@ -23,9 +24,21 @@ class ReadingCategoryPresenter {
   fetchSites(String category) async {
     final response = await http.get("https://gank.io/api/xiandu/category/$category");
     if (response.statusCode == 200) {
-      _view.fetchSitesReceived();
+      _view.fetchSitesReceived(ReadingSiteResult.fromJson(response.body));
     } else {
       throw Exception('fetchSites-$category-Error ${response.statusCode}');
     }
   }
+}
+
+class ReadingCategoryEvent {
+  ReadingCategoryEvent({this.categories});
+
+  List<ReadingCategory> categories;
+}
+
+class ReadingSiteEvent {
+  ReadingSiteEvent({this.sites});
+
+  List<ReadingSite> sites;
 }

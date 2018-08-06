@@ -1,29 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:gankio/data/reading_data.dart';
+import 'package:gankio/presenter/reading_presenter.dart';
+import 'package:event_bus/event_bus.dart';
+
+var _bus = EventBus();
 
 class ReadingCategoryPage extends StatefulWidget {
   @override
   _ReadingCategoryState createState() => _ReadingCategoryState();
 }
 
-class _ReadingCategoryState extends State<ReadingCategoryPage> {
+class _ReadingCategoryState extends State<ReadingCategoryPage> implements ReadingCategoryView {
   var _categories = List<ReadingCategory>();
+  var _sites = List<ReadingSite>();
+
+  ReadingCategoryPresenter _presenter;
 
   _ReadingCategoryState() {
-    _categories.add(ReadingCategory(id: 'wow', name: '科技资讯'));
-    _categories.add(ReadingCategory(id: 'apps', name: '趣味软件/游戏'));
-    _categories.add(ReadingCategory(id: 'imrich', name: '装备党'));
-    _categories.add(ReadingCategory(id: 'funny', name: '草根新闻'));
-    _categories.add(ReadingCategory(id: 'android', name: 'Android'));
-    _categories.add(ReadingCategory(id: 'diediedie', name: '创业新闻'));
-    _categories.add(ReadingCategory(id: 'thinking', name: '独立思想'));
-    _categories.add(ReadingCategory(id: 'iOS', name: 'iOS'));
-    _categories.add(ReadingCategory(id: 'teamblog', name: '团队博客'));
+    _presenter = ReadingCategoryPresenter(this);
   }
 
   @override
   void initState() {
     super.initState();
+    _presenter.fetchCategory();
+    _bus.on<ReadingCategoryEvent>().listen((event) {
+      if (this.mounted) {
+        setState(() {
+          _categories.clear();
+          _categories.addAll(event.categories);
+          _presenter.fetchSites(event.categories[0].enName);
+        });
+      }
+    });
+    _bus.on<ReadingSiteEvent>().listen((event) {
+      if (this.mounted) {
+        setState(() {
+          _sites.clear();
+          _sites.addAll(event.sites);
+        });
+      }
+    });
   }
 
   @override
@@ -31,6 +48,11 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> {
     var _categoryWidgets = List<Widget>();
     for (var category in _categories) {
       _categoryWidgets.add(_buildCategoryItem(category));
+    }
+
+    var _siteWidgets = List<Widget>();
+    for (var site in _sites) {
+      _siteWidgets.add(_buildSiteItem(site));
     }
 
     return Scaffold(
@@ -57,19 +79,14 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> {
             color: Colors.white,
             padding: EdgeInsets.only(top: 10.0),
             width: MediaQuery.of(context).size.width * 0.7,
-            child: ListView(children: <Widget>[
-              _buildSiteItem(),
-              _buildSiteItem(),
-              _buildSiteItem(),
-              _buildSiteItem(),
-            ]),
+            child: ListView(children: _siteWidgets),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSiteItem() {
+  Widget _buildSiteItem(ReadingSite site) {
     return Material(
       child: InkWell(
         onTap: () {
@@ -86,11 +103,11 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> {
                     height: 40.0,
                     width: 40.0,
                     margin: EdgeInsets.only(right: 10.0),
-                    child: Image.network("http://ww1.sinaimg.cn/large/0066P23Wjw1f7efrjl9h0j3074074glz.jpg"),
+                    child: Image.network(site.icon),
                   ),
                   Expanded(
                     child: Text(
-                      'Android Developer BlogBlogBlogBlogBlogBlogBlog',
+                      site.title,
                       maxLines: 2,
                       style: TextStyle(
                         fontSize: 13.0,
@@ -140,5 +157,19 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> {
         ),
       ),
     );
+  }
+
+  @override
+  fetchCategoryReceived(ReadingCategoryResult result) {
+    if (result.results != null && result.results.length != 0) {
+      _bus.fire(ReadingCategoryEvent(categories: result.results));
+    }
+  }
+
+  @override
+  fetchSitesReceived(ReadingSiteResult result) {
+    if (result.results != null && result.results.length != 0) {
+      _bus.fire(ReadingSiteEvent(sites: result.results));
+    }
   }
 }

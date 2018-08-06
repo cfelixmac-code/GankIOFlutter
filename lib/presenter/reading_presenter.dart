@@ -40,13 +40,26 @@ class ReadingPresenter {
 
   final ReadingView _readingView;
 
+  var _page = 1;
+  var _requesting = false;
+
   fetchReadingArticles(String site, bool clear) async {
-    final response = await http.get("https://gank.io/api/xiandu/data/id/$site/count/15/page/1");
-    if (response.statusCode == 200 && _readingView != null) {
-      _readingView.fetchReadingArticlesReceived(ReadingArticleResult.fromJson(response.body), clear);
-    } else {
-      throw Exception('fetchReadingArticles-$site-Error ${response.statusCode}');
+    if (!_requesting) {
+      if (!clear) _page++;
+      _requesting = true;
+      final response = await http.get("https://gank.io/api/xiandu/data/id/$site/count/25/page/$_page");
+      if (response.statusCode == 200 && _readingView != null) {
+        _requesting = false;
+        _readingView.fetchReadingArticlesReceived(ReadingArticleResult.fromJson(response.body), clear);
+      } else {
+        throw Exception('fetchReadingArticles-$site-Error ${response.statusCode}');
+      }
     }
+  }
+
+  handleSiteChange() {
+    _page = 1;
+    _requesting = false;
   }
 }
 

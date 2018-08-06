@@ -2,6 +2,8 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:gankio/data/reading_data.dart';
 import 'package:gankio/display/reading_category.dart';
+import 'package:gankio/display/web_view.dart';
+import 'package:gankio/main.dart';
 import 'package:gankio/presenter/reading_presenter.dart';
 
 var _bus = EventBus();
@@ -19,6 +21,8 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
 
   ReadingPresenter _presenter;
 
+  var _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +38,12 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
         }
       });
     });
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _presenter.fetchReadingArticles(_currentSiteId, false);
+      }
+    });
   }
 
   @override
@@ -42,6 +52,7 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
     for (var article in _currentArticles) {
       _articleWidgets.add(_buildArticleItem(article));
     }
+    _articleWidgets.add(_buildArticleLoading(true));
 
     return Container(
       child: Column(
@@ -66,8 +77,11 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
                       if (results != null) {
                         setState(() {
                           if (this.mounted) {
+                            _currentArticles.clear();
                             _currentSiteName = results['siteName'];
                             _currentSiteId = results['siteId'];
+                            _scrollController.jumpTo(0.0);
+                            _presenter.handleSiteChange();
                             _presenter.fetchReadingArticles(_currentSiteId, true);
                           }
                         });
@@ -83,10 +97,26 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
           ),
           Expanded(
             child: ListView(
+              controller: _scrollController,
               children: _articleWidgets,
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildArticleLoading(bool loading) {
+    return Container(
+      height: 60.0,
+      child: Center(
+        child: Container(
+          width: 24.0,
+          height: 24.0,
+          child: CircularProgressIndicator(
+            strokeWidth: 2.0,
+          ),
+        ),
       ),
     );
   }
@@ -101,7 +131,15 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
           Expanded(
             child: Material(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      GankNavigator(
+                          builder: (context) => WebViewer(
+                                url: article.url,
+                                title: article.title,
+                              )));
+                },
                 child: Row(
                   children: <Widget>[
                     Expanded(

@@ -9,6 +9,8 @@ abstract class ReadingCategoryView {
 
 abstract class ReadingView {
   fetchReadingArticlesReceived(ReadingArticleResult result, bool clear);
+
+  fetchReadingArticlesEnd();
 }
 
 class ReadingCategoryPresenter {
@@ -50,7 +52,12 @@ class ReadingPresenter {
       final response = await http.get("https://gank.io/api/xiandu/data/id/$site/count/25/page/$_page");
       if (response.statusCode == 200 && _readingView != null) {
         _requesting = false;
-        _readingView.fetchReadingArticlesReceived(ReadingArticleResult.fromJson(response.body), clear);
+        ReadingArticleResult result = ReadingArticleResult.fromJson(response.body);
+        if (result != null && result.results != null && result.results.length != 0) {
+          _readingView.fetchReadingArticlesReceived(result, clear);
+        } else {
+          _readingView.fetchReadingArticlesEnd();
+        }
       } else {
         throw Exception('fetchReadingArticles-$site-Error ${response.statusCode}');
       }
@@ -87,3 +94,5 @@ class ReadingArticlesEvent {
   bool clear;
   List<ReadingArticle> results;
 }
+
+class ReadingArticlesEndEvent {}

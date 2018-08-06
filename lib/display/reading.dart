@@ -18,6 +18,7 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
   var _currentSiteId = 'appinn';
 
   var _currentArticles = List<ReadingArticle>();
+  var _isListEnd = false;
 
   ReadingPresenter _presenter;
 
@@ -29,18 +30,25 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
     _presenter = ReadingPresenter(this);
     _presenter.fetchReadingArticles(_currentSiteId, true);
     _bus.on<ReadingArticlesEvent>().listen((event) {
-      setState(() {
-        if (this.mounted) {
+      if (this.mounted) {
+        setState(() {
           if (event.clear) {
             _currentArticles.clear();
           }
           _currentArticles.addAll(event.results);
-        }
-      });
+        });
+      }
+    });
+    _bus.on<ReadingArticlesEndEvent>().listen((event) {
+      if (this.mounted) {
+        setState(() {
+          _isListEnd = true;
+        });
+      }
     });
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (!_isListEnd && _scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _presenter.fetchReadingArticles(_currentSiteId, false);
       }
     });
@@ -52,7 +60,9 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
     for (var article in _currentArticles) {
       _articleWidgets.add(_buildArticleItem(article));
     }
-    _articleWidgets.add(_buildArticleLoading(true));
+    if (!_isListEnd) {
+      _articleWidgets.add(_buildArticleLoading());
+    }
 
     return Container(
       child: Column(
@@ -72,11 +82,11 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
                 Container(
                   child: IconButton(
                     onPressed: () async {
-                      Map results =
-                          await Navigator.push(context, MaterialPageRoute(builder: (context) => ReadingCategoryPage()));
+                      Map results = await Navigator.push(context, MaterialPageRoute(builder: (context) => ReadingCategoryPage()));
                       if (results != null) {
                         setState(() {
                           if (this.mounted) {
+                            _isListEnd = false;
                             _currentArticles.clear();
                             _currentSiteName = results['siteName'];
                             _currentSiteId = results['siteId'];
@@ -106,7 +116,7 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
     );
   }
 
-  Widget _buildArticleLoading(bool loading) {
+  Widget _buildArticleLoading() {
     return Container(
       height: 60.0,
       child: Center(
@@ -148,9 +158,7 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
                         overflow: TextOverflow.ellipsis,
                         text: TextSpan(
                           children: <TextSpan>[
-                            TextSpan(
-                                text: '${article.published}\n',
-                                style: TextStyle(fontSize: 10.0, color: Colors.blueAccent)),
+                            TextSpan(text: '${article.published}\n', style: TextStyle(fontSize: 10.0, color: Colors.blueAccent)),
                             TextSpan(text: article.title, style: TextStyle(fontSize: 13.0, color: Colors.black87)),
                           ],
                         ),
@@ -173,8 +181,11 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
 
   @override
   fetchReadingArticlesReceived(ReadingArticleResult result, bool clear) {
-    if (result != null && result.results != null) {
-      _bus.fire(ReadingArticlesEvent(results: result.results, clear: clear));
-    }
+    _bus.fire(ReadingArticlesEvent(results: result.results, clear: clear));
+  }
+
+  @override
+  fetchReadingArticlesEnd() {
+    _bus.fire(ReadingArticlesEndEvent());
   }
 }

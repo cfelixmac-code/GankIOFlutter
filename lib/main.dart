@@ -100,9 +100,9 @@ class _HomePageState extends State<HomePage> {
         ],
         currentIndex: _pageIndex,
         onTap: (int pos) {
-          _pageController.animateToPage(pos, duration: new Duration(milliseconds: 400), curve: Curves.easeInOut);
+          _pageController.jumpToPage(pos);
+//        _pageController.jumpTo(pos, duration: new Duration(milliseconds: 400), curve: Curves.easeInOut);
           _updatePageIndex(pos);
-          print("position : $pos");
         },
       ),
     );

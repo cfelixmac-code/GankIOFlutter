@@ -1,7 +1,7 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:gankio/data/reading_data.dart';
 import 'package:gankio/presenter/reading_presenter.dart';
-import 'package:event_bus/event_bus.dart';
 
 var _bus = EventBus();
 
@@ -29,6 +29,7 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> implements Readin
         setState(() {
           _categories.clear();
           _categories.addAll(event.categories);
+          changeCurrentSelectedCategory(event.categories[0]);
           _presenter.fetchSites(event.categories[0].enName);
         });
       }
@@ -41,6 +42,31 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> implements Readin
         });
       }
     });
+    _bus.on<ReadingCategorySwitchEvent>().listen((event) {
+      if (this.mounted) {
+        setState(() {
+          if (changeCurrentSelectedCategory(event.category)) {
+            _presenter.fetchSites(event.category.enName);
+          }
+        });
+      }
+    });
+  }
+
+  bool changeCurrentSelectedCategory(ReadingCategory category) {
+    if (_categories != null) {
+      bool result = false;
+      for (var c in _categories) {
+        if (c.enName == category.enName) {
+          result = true;
+          c.selected = true;
+        } else {
+          c.selected = false;
+        }
+      }
+      return result;
+    }
+    return false;
   }
 
   @override
@@ -90,7 +116,7 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> implements Readin
     return Material(
       child: InkWell(
         onTap: () {
-          // ------------
+          Navigator.pop(context, {'siteId': site.id, 'siteName': site.title});
         },
         child: Container(
           padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
@@ -132,26 +158,31 @@ class _ReadingCategoryState extends State<ReadingCategoryPage> implements Readin
   }
 
   Widget _buildCategoryItem(ReadingCategory category) {
-    return Container(
-      height: 46.0,
-      padding: EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+    return GestureDetector(
+      onTap: () {
+        _bus.fire(ReadingCategorySwitchEvent(category));
+      },
       child: Container(
-        padding: EdgeInsets.only(left: 10.0, right: 10.0),
-        decoration: BoxDecoration(
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.all(
-            Radius.circular(15.0),
+        height: 46.0,
+        padding: EdgeInsets.only(top: 8.0, bottom: 8.0, left: 8.0, right: 8.0),
+        child: Container(
+          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          decoration: BoxDecoration(
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.all(
+              Radius.circular(15.0),
+            ),
           ),
-        ),
-        child: Center(
-          child: Text(
-            '${category.name}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 13.5,
-              fontWeight: FontWeight.w300,
-              color: Colors.white,
+          child: Center(
+            child: Text(
+              '${category.name}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w300,
+                color: category.selected ? Colors.deepOrangeAccent : Colors.white,
+              ),
             ),
           ),
         ),

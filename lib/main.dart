@@ -35,7 +35,9 @@ class _HomePageState extends State<HomePage> {
 
   void _updatePageIndex(int index) {
     setState(() {
-      this._pageIndex = index;
+      if (this.mounted) {
+        this._pageIndex = index;
+      }
     });
   }
 
@@ -69,10 +71,22 @@ class _HomePageState extends State<HomePage> {
           _updatePageIndex(position);
         },
         children: <Widget>[
-          new TodayPage(),
-          new HistoryPage(),
-          new ReadingPage(),
-          new FuliPage(),
+          Container(
+            key: PageStorageKey("today"),
+            child: TodayPage(),
+          ),
+          Container(
+            key: PageStorageKey("history"),
+            child: HistoryPage(),
+          ),
+          Container(
+            key: PageStorageKey("reading"),
+            child: ReadingPage(),
+          ),
+          Container(
+            key: PageStorageKey("setting"),
+            child: FuliPage(),
+          ),
         ],
         controller: _pageController,
       ),

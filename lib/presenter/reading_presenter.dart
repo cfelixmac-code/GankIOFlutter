@@ -7,15 +7,19 @@ abstract class ReadingCategoryView {
   fetchSitesReceived(ReadingSiteResult result);
 }
 
-class ReadingCategoryPresenter {
-  ReadingCategoryPresenter(this._view);
+abstract class ReadingView {
+  fetchReadingArticlesReceived(ReadingArticleResult result, bool clear);
+}
 
-  final ReadingCategoryView _view;
+class ReadingCategoryPresenter {
+  ReadingCategoryPresenter(this._categoryView);
+
+  final ReadingCategoryView _categoryView;
 
   fetchCategory() async {
     final response = await http.get("https://gank.io/api/xiandu/categories");
-    if (response.statusCode == 200) {
-      _view.fetchCategoryReceived(ReadingCategoryResult.fromJson(response.body));
+    if (response.statusCode == 200 && _categoryView != null) {
+      _categoryView.fetchCategoryReceived(ReadingCategoryResult.fromJson(response.body));
     } else {
       throw Exception('fetchCategory-Error ${response.statusCode}');
     }
@@ -23,10 +27,25 @@ class ReadingCategoryPresenter {
 
   fetchSites(String category) async {
     final response = await http.get("https://gank.io/api/xiandu/category/$category");
-    if (response.statusCode == 200) {
-      _view.fetchSitesReceived(ReadingSiteResult.fromJson(response.body));
+    if (response.statusCode == 200 && _categoryView != null) {
+      _categoryView.fetchSitesReceived(ReadingSiteResult.fromJson(response.body));
     } else {
       throw Exception('fetchSites-$category-Error ${response.statusCode}');
+    }
+  }
+}
+
+class ReadingPresenter {
+  ReadingPresenter(this._readingView);
+
+  final ReadingView _readingView;
+
+  fetchReadingArticles(String site, bool clear) async {
+    final response = await http.get("https://gank.io/api/xiandu/data/id/$site/count/15/page/1");
+    if (response.statusCode == 200 && _readingView != null) {
+      _readingView.fetchReadingArticlesReceived(ReadingArticleResult.fromJson(response.body), clear);
+    } else {
+      throw Exception('fetchReadingArticles-$site-Error ${response.statusCode}');
     }
   }
 }
@@ -41,4 +60,17 @@ class ReadingSiteEvent {
   ReadingSiteEvent({this.sites});
 
   List<ReadingSite> sites;
+}
+
+class ReadingCategorySwitchEvent {
+  ReadingCategorySwitchEvent(this.category);
+
+  ReadingCategory category;
+}
+
+class ReadingArticlesEvent {
+  ReadingArticlesEvent({this.results, this.clear = false});
+
+  bool clear;
+  List<ReadingArticle> results;
 }

@@ -24,6 +24,8 @@ class ReadingCategory {
   String name;
   String enName;
 
+  bool selected = false;
+
   factory ReadingCategory.fromJson(dynamic raw) {
     Map<String, dynamic> rawCategory = raw;
     return ReadingCategory(id: rawCategory['_id'], name: rawCategory['name'], enName: rawCategory['en_name']);
@@ -56,5 +58,40 @@ class ReadingSite {
   factory ReadingSite.fromJson(dynamic raw) {
     Map<String, dynamic> rawSite = raw;
     return ReadingSite(id: rawSite['id'], icon: rawSite['icon'], title: rawSite['title']);
+  }
+}
+
+class ReadingArticleResult {
+  ReadingArticleResult({this.error, this.results});
+
+  bool error;
+  List<ReadingArticle> results;
+
+  factory ReadingArticleResult.fromJson(String raw) {
+    var decoded = json.decode(raw);
+    var results = List<ReadingArticle>();
+    for (var rawArticle in decoded['results']) {
+      results.add(ReadingArticle.fromJson(rawArticle));
+    }
+    return ReadingArticleResult(error: decoded['error'], results: results);
+  }
+}
+
+class ReadingArticle {
+  ReadingArticle({this.url, this.title, this.published, this.author});
+
+  String url;
+
+  String title;
+
+  String published;
+
+  String author;
+
+  factory ReadingArticle.fromJson(dynamic raw) {
+    String publishTime = raw['published_at'];
+    publishTime = (publishTime != null && publishTime.length > 10) ? publishTime.substring(0, 10) : publishTime;
+
+    return ReadingArticle(url: raw['url'], title: raw['title'], published: publishTime);
   }
 }

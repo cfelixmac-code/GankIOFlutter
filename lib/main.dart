@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gankio/display/fuli.dart';
 import 'package:gankio/display/history.dart';
 import 'package:gankio/display/reading.dart';
 import 'package:gankio/display/search.dart';
+import 'package:gankio/display/setting.dart';
 import 'package:gankio/display/today.dart';
 
 void main() => runApp(new MyApp());
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Container(
             key: PageStorageKey("setting"),
-            child: FuliPage(),
+            child: SettingPage(),
           ),
         ],
         controller: _pageController,

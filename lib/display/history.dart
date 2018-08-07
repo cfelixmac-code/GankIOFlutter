@@ -15,6 +15,9 @@ class _HistoryPageState extends State<HistoryPage> implements HistoryView {
   HistoryPresenter _presenter;
 
   var _data = List<HistoryResultItem>();
+  var _pageIndex = 1;
+  var _requesting = false;
+  var _end = false;
 
   _HistoryPageState() {
     _presenter = HistoryPresenter(this);
@@ -31,8 +34,9 @@ class _HistoryPageState extends State<HistoryPage> implements HistoryView {
   @override
   void initState() {
     super.initState();
-    _presenter.fetchHistory();
+    _presenter.fetchHistory(page: _pageIndex);
     _bus.on<HistoryResultEvent>().listen((event) {
+      _requesting = false;
       _updateResults(event.result);
     });
   }
@@ -42,15 +46,41 @@ class _HistoryPageState extends State<HistoryPage> implements HistoryView {
     super.dispose();
   }
 
+  var _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
+    _scrollController.addListener(() {
+      if (!_requesting && _scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _pageIndex++;
+        _requesting = true;
+        _presenter.fetchHistory(page: _pageIndex);
+      }
+    });
+
     if (_data.length != 0) {
       return Center(
         child: ListView.builder(
+          controller: _scrollController,
           padding: EdgeInsets.all(3.0),
-          itemCount: _data.length,
+          itemCount: _end ? _data.length : _data.length + 1,
           itemBuilder: (context, index) {
-            return HistoryListItem(_data[index]);
+            if (index < _data.length) {
+              return HistoryListItem(_data[index]);
+            } else {
+              return Container(
+                height: 60.0,
+                child: Center(
+                  child: Container(
+                    width: 24.0,
+                    height: 24.0,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.0,
+                    ),
+                  ),
+                ),
+              );
+            }
           },
         ),
       );
@@ -67,7 +97,11 @@ class _HistoryPageState extends State<HistoryPage> implements HistoryView {
 
   @override
   fetchReceived(HistoryResult result) {
-    _bus.fire(HistoryResultEvent(result: result));
+    if (result.results != null && result.results.length != 0) {
+      _bus.fire(HistoryResultEvent(result: result));
+    } else {
+      _end = true;
+    }
   }
 }
 

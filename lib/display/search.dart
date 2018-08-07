@@ -94,6 +94,7 @@ class _SearchPageState extends State<SearchPage> {
                     Expanded(
                       child: TextFormField(
                         autofocus: true,
+                        style: TextStyle(fontSize: 14.0, color: Colors.black87),
                         keyboardType: TextInputType.text,
                         controller: _keywordInputController,
                         onFieldSubmitted: (val) {

@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/logo.png" width="60px", height="auto" /> Gank.IO
+# ![](https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/logo.png) Gank.IO
 **Another [Gank.io](https://gank.io/) Client by Flutter (for Android & iOS)**
 
 又一个 Flutter 编写的 [Gank.io](https://gank.io/) App, 支持 Android、iOS平台

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class WebViewer extends StatelessWidget {
-  WebViewer({this.url, this.title = "Gank IO"});
+  WebViewer({this.url, this.title = "Gank.IO"});
 
   final String url;
   final String title;

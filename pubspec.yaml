@@ -37,6 +37,7 @@ flutter:
   - images/front_icon.png
   - images/ios_icon.png
   - images/relax_icon.png
+  - images/gankio.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

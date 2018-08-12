@@ -14,9 +14,9 @@ MIT
 ## Screenshots
 ![](https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/screen1.jpg)![](https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/screen2.jpg)![](https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/screen3.jpg)![](https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/screen4.jpg)![](https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/screen5.jpg)
 
-## Known Issue
-* Large Image View can't  load animated gifs' animation
-* Web View can't load webpage correctly occasionally
+## Known Issues
+* Large Image View can't  load animated GIFs' animation.
+* Web View can't load web page correctly occasionally.
 
 
 

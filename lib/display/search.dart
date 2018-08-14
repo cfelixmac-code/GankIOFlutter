@@ -132,9 +132,8 @@ class _SearchPageState extends State<SearchPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => WebViewer(
-                        url: resultItem.url,
-                        title: resultItem.desc,
+                  builder: (context) => WebViewPage(
+                        resultItem.url,
                       )));
         },
         child: Material(
@@ -143,9 +142,8 @@ class _SearchPageState extends State<SearchPage> {
               Navigator.push(
                   context,
                   GankNavigator(
-                      builder: (context) => WebViewer(
-                            url: resultItem.url,
-                            title: resultItem.desc,
+                      builder: (context) => WebViewPage(
+                            resultItem.url,
                           )));
             },
             child: Column(

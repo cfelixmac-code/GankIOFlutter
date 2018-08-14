@@ -114,9 +114,8 @@ class _TodayDetailDialogState extends State<TodayDetailDialog> {
         Navigator.push(
             context,
             GankNavigator(
-                builder: (context) => WebViewer(
-                      url: article.url,
-                      title: article.desc,
+                builder: (context) => WebViewPage(
+                      article.url,
                     )));
       },
       child: Container(

@@ -6,7 +6,7 @@
 
 
 ## Version
-1.0
+1.1
 ## Download Apk Link
 [LINK](https://raw.githubusercontent.com/cfelixw/GankIOFlutter/master/doc/gank_io_flutter_v1.0.apk)
 ## License

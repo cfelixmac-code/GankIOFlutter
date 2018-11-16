@@ -82,7 +82,8 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
                 Container(
                   child: IconButton(
                     onPressed: () async {
-                      Map results = await Navigator.push(context, MaterialPageRoute(builder: (context) => ReadingCategoryPage()));
+                      Map results =
+                          await Navigator.push(context, MaterialPageRoute(builder: (context) => ReadingCategoryPage()));
                       if (results != null) {
                         setState(() {
                           if (this.mounted) {
@@ -145,9 +146,8 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
                   Navigator.push(
                       context,
                       GankNavigator(
-                          builder: (context) => WebViewer(
-                                url: article.url,
-                                title: article.title,
+                          builder: (context) => WebViewPage(
+                                article.url,
                               )));
                 },
                 child: Row(
@@ -158,7 +158,9 @@ class _ReadingPageState extends State<ReadingPage> implements ReadingView {
                         overflow: TextOverflow.ellipsis,
                         text: TextSpan(
                           children: <TextSpan>[
-                            TextSpan(text: '${article.published}\n', style: TextStyle(fontSize: 10.0, color: Colors.blueAccent)),
+                            TextSpan(
+                                text: '${article.published}\n',
+                                style: TextStyle(fontSize: 10.0, color: Colors.blueAccent)),
                             TextSpan(text: article.title, style: TextStyle(fontSize: 13.0, color: Colors.black87)),
                           ],
                         ),

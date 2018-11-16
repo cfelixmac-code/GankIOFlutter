@@ -63,9 +63,8 @@ class _HistoryDetailDialogState extends State<HistoryDetailDialog> {
         Navigator.push(
             context,
             GankNavigator(
-                builder: (context) => WebViewer(
-                      url: article.url,
-                      title: article.title,
+                builder: (context) => WebViewPage(
+                      article.url,
                     )));
       },
       child: Container(
